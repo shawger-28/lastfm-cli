@@ -1,4 +1,14 @@
-.venv/
+# Python cache
 __pycache__/
-*.pyc
-.env
+*.py[cod]
+
+# Virtual environments
+.venv/
+
+# Build artifacts
+build/
+dist/
+*.egg-info
+
+# OS files
+.DS_Store
