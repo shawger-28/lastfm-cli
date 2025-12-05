@@ -15,7 +15,6 @@ class ConfigError(Exception):
 def load_config():
     config = {}
 
-    # 1. Load from environment variables first
     env_username = os.getenv("LASTFM_USERNAME")
     env_api_key = os.getenv("LASTFM_API_KEY")
     env_limit = os.getenv("LASTFM_LIMIT")
@@ -32,7 +31,6 @@ def load_config():
         except ValueError:
             raise ConfigError("LASTFM_LIMIT must be an integer")
 
-    # 2. Load from config file if needed
     if CONFIG_PATH.exists():
         parser = configparser.ConfigParser()
 
@@ -58,11 +56,9 @@ def load_config():
             except ValueError:
                 raise ConfigError("default_limit must be an integer")
 
-    # 3. Apply defaults
     if "default_limit" not in config:
         config["default_limit"] = DEFAULT_LIMIT
 
-    # 4. Validate required fields
     if not config.get("username"):
         raise ConfigError(
             "Missing username.\n"

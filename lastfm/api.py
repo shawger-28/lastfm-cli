@@ -43,7 +43,6 @@ def get_recent_tracks(username, api_key, limit):
     except ValueError:
         raise InvalidResponseError("API did not return valid JSON")
 
-    # Handle API-level errors
     if "error" in data:
         message = data.get("message", "Unknown API error")
         raise APIError(f"Last.fm API error: {message}")
