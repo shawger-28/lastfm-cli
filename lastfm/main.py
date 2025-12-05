@@ -21,29 +21,34 @@ def main():
     username = args.user if args.user else config["username"]
     limit = args.limit if args.limit else config["default_limit"]
 
-    try:
-        while True:
-            os.system('cls' if os.name == 'nt' else 'clear')
+    def fetch_and_print():
+        try:
+            tracks = get_recent_tracks(
+                username=username,
+                api_key=config["api_key"],
+                limit=limit,
+            )
+        except (APIError, NetworkError, InvalidResponseError) as e:
+            print(f"API error: {e}")
+            sys.exit(1)
 
-            try:
-                tracks = get_recent_tracks(
-                    username=username,
-                    api_key=config["api_key"],
-                    limit=limit,
-                )
-            except (APIError, NetworkError, InvalidResponseError) as e:
-                print(f"API error: {e}")
-                sys.exit(1)
+        formatted = format_tracks(tracks)
+        for item in formatted:
+            print(item)
+            print("-" * 40)
 
-            formatted = format_tracks(tracks)
+    if args.live:
+        try:
+            while True:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                fetch_and_print()
+                time.sleep(30)
+        except KeyboardInterrupt:
+            print("\nExiting...")
+            sys.exit(0)
+    else:
+        fetch_and_print()
 
-            for item in formatted:
-                print(item)
-                print("-" * 40)
 
-            time.sleep(30)
-
-    except KeyboardInterrupt:
-        print("\nExiting...")
-        sys.exit(0)
-
+if __name__ == "__main__":
+    main()

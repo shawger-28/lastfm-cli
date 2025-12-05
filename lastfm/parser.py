@@ -18,4 +18,9 @@ def build_parser():
         help="Override username",
     )
 
+    parser.add_argument(
+    	"--live",
+    	action="store_true",
+    	help="Continuously update the track list",
+    )
     return parser
