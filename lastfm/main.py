@@ -1,4 +1,6 @@
 import sys
+import os
+import time
 
 from lastfm.config import load_config, ConfigError
 from lastfm.api import get_recent_tracks, APIError, NetworkError, InvalidResponseError
@@ -20,21 +22,28 @@ def main():
     limit = args.limit if args.limit else config["default_limit"]
 
     try:
-        tracks = get_recent_tracks(
-            username=username,
-            api_key=config["api_key"],
-            limit=limit,
-        )
-    except (APIError, NetworkError, InvalidResponseError) as e:
-        print(f"API error: {e}")
-        sys.exit(1)
+        while True:
+            os.system('cls' if os.name == 'nt' else 'clear')
 
-    formatted = format_tracks(tracks)
+            try:
+                tracks = get_recent_tracks(
+                    username=username,
+                    api_key=config["api_key"],
+                    limit=limit,
+                )
+            except (APIError, NetworkError, InvalidResponseError) as e:
+                print(f"API error: {e}")
+                sys.exit(1)
 
-    for item in formatted:
-        print(item)
-        print("-" * 40)
+            formatted = format_tracks(tracks)
 
+            for item in formatted:
+                print(item)
+                print("-" * 40)
 
-if __name__ == "__main__":
-    main()
+            time.sleep(30)
+
+    except KeyboardInterrupt:
+        print("\nExiting...")
+        sys.exit(0)
+
