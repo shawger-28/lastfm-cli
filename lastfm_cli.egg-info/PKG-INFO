@@ -1,5 +1,0 @@
-Metadata-Version: 2.4
-Name: lastfm-cli
-Version: 0.1.0
-Summary: CLI for viewing last.fm history
-Requires-Dist: requests
